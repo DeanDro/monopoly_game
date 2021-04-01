@@ -19,7 +19,7 @@ class Crazy_Monopoly(tk.Frame):
         self.create_dropdown(['Car', 'Boat', 'Airplane', 'Boot'], 1, 2)
         self.create_labels('Number of opponents', 0, 3, 1, 15, 20)
         self.create_dropdown(['1', '2', '3'], 1, 3)
-        self.create_button('Start Game', 0, 4, None, 50)
+        self.create_button('Start Game', 0, 4, self.start_game, 50)
         self.create_button('Cancel', 1, 4, self.close_game)
 
     # Function to create a label giving the text and placement
