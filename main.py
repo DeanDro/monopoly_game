@@ -4,8 +4,10 @@
 
 import tkinter as tk
 from tkinter import StringVar
+from game import Game
 
-class Crazy_Monopoly(tk.Frame):
+
+class CrazyMonopoly(tk.Frame):
 
     """Set an class for the application"""
     def __init__(self, master):
@@ -54,12 +56,13 @@ class Crazy_Monopoly(tk.Frame):
         self.master.quit()
 
     # Method to start the monopoly game
-    def start_game(self):
-        pass
+    def start_game(self) -> None:
+        start_game = Game()
+
 
 root = tk.Tk()
 root.geometry('400x400')
 root.configure(background='black')
 root.title('Crazy Monopoly')
-crazy_monopoly = Crazy_Monopoly(root)
+crazy_monopoly = CrazyMonopoly(root)
 crazy_monopoly.mainloop()
