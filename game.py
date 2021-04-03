@@ -1,6 +1,7 @@
 """Actual monopoly game"""
 
 import pygame
+import sys
 
 
 class Game:
@@ -11,22 +12,13 @@ class Game:
         self.running = True
         while self.running:
             for event in pygame.event.get():
-                self.running = False
-                # self.event_handler(event)
-            pygame.display.update()
-
-    # Method to start running the game
-    def run_game(self):
-        while self.running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.running = False
-
+                self.event_handler(event)
             pygame.display.update()
 
     # Event handler function to track user interaction
     def event_handler(self, event):
         if event.type == pygame.QUIT:
             self.running = False
-            #pygame.quit()
-        pygame.display.update()
+            pygame.quit()
+            # We add the sys.exit() so when the player presses quit exit the program all together
+            sys.exit()
