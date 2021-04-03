@@ -23,6 +23,7 @@ class CrazyMonopoly(tk.Frame):
         self.create_dropdown(['1', '2', '3'], 1, 3)
         self.create_button('Start Game', 0, 4, self.start_game, 50)
         self.create_button('Cancel', 1, 4, self.close_game)
+        self.start_game = None
 
     # Function to create a label giving the text and placement
     def create_labels(self, label_text, column_loc, row_loc, column_length=None, x_gap=None, y_gap=None):
@@ -57,7 +58,7 @@ class CrazyMonopoly(tk.Frame):
 
     # Method to start the monopoly game
     def start_game(self) -> None:
-        start_game = Game()
+        self.start_game = Game()
 
 
 root = tk.Tk()
