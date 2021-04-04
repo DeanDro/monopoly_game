@@ -1,4 +1,5 @@
 """Parent class for creating both human and AI players"""
+from cards_classes.cards import Cards
 
 
 class Players:
@@ -23,3 +24,7 @@ class Players:
     # Set if the user is human or AI
     def set_human_status(self, status):
         self.human = status
+
+    # Method to adjust a card in the players deck of cards
+    def add_card_players_stuck(self, card_var, command_option=None):
+        self.cards.update(card_var)

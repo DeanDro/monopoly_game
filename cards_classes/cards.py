@@ -14,3 +14,7 @@ class Cards:
     # Method to assign owner to a card if it is purchased
     def assign_owner(self, new_owner):
         self.owner = new_owner
+
+    # Check who is the property owner
+    def check_ownership(self):
+        return self.owner
