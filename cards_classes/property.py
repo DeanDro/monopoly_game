@@ -1,6 +1,6 @@
 """This is for the cards that represent properties in the game"""
 
-from cards import Cards
+from cards_classes.cards import Cards
 from tkinter import messagebox
 
 
