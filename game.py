@@ -74,22 +74,31 @@ class CardsData:
 
     """initiate"""
     def __init__(self):
-        self.excel_data = pandas.read_excel('Monopoly_data.xlsx', sheet_name='European Cities')
+        self.cities_data = pandas.read_excel('Monopoly_data.xlsx', sheet_name='European Cities')
+        self.special_data = pandas.read_excel('Monopoly_data.xlsx', sheet_name='Special Cards')
+        self.transportation_data = pandas.read_excel('Monopoly_data.xlsx', sheet_name='Transportation')
+        self.energy_data = pandas.read_excel('Monopoly_data.xlsx', sheet_name='Energy')
+        self.community_data = pandas.read_excel('Monopoly_data.xlsx', sheet_name='Community Cards')
+        self.chance_data = pandas.read_excel('Monopoly_data.xlsx', sheet_name='Chance Cards')
         self.cards_dictionary = self.return_dict_card_data()
 
-    # Function to get the data loaded from excel to a dataframe and
-    # then load the data from the dataframe to a dictionary of Properties class
     def return_dict_card_data(self):
-        cards_dictionary = dict()
-        city_names = self.excel_data['City']
-        sell_value = self.excel_data['Sell Value']
-        resell_value = self.excel_data['Resell Value']
-        rent_value = self.excel_data['Rent']
-        house_value = self.excel_data['house value']
-        hotel_value = self.excel_data['hotel value']
-        for i in range(0, 22):
+        # Function to get the data loaded from excel to five different dataframes and
+        # then load the data from the dataframes to a dictionary of each card type and then to a major dictionary that
+        # will hold dictionaries from each card type
+        cities_dictionary = dict()
+        special_dictionary = dict()
+        transportation_dictionary = dict()
+        city_names = self.cities_data['City']
+        sell_value = self.cities_data['Sell Value']
+        resell_value = self.cities_data['Resell Value']
+        rent_value = self.cities_data['Rent']
+        house_value = self.cities_data['house value']
+        hotel_value = self.cities_data['hotel value']
+        for i in range(0, len(self.cities_data.index)):
             new_card = Properties(city_names[i], True, None, sell_value[i], rent_value[i],
                                   resell_value[i], house_value[i], hotel_value[i])
-            cards_dictionary[city_names[i]] = new_card
-        return cards_dictionary
+            cities_dictionary[city_names[i]] = new_card
+        # Stopping here because realized i need to build special subclasses for the rest of the special cards
+        return cities_dictionary
 
