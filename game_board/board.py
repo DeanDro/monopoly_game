@@ -1,7 +1,7 @@
 """This is the class to create the actual cards"""
 
 import pygame
-from game_board.load_card_data import CardsData
+from game import CardsData
 
 
 class Board:

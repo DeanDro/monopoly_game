@@ -10,7 +10,7 @@ class Game:
 
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((800, 600))
+        self.screen = pygame.display.set_mode((1200, 700))
         self.running = True
         self.create_cards_on_board()
         while self.running:
@@ -29,16 +29,44 @@ class Game:
     # Method to get the cards from the Board class and draw the cards on the board
     def create_cards_on_board(self):
         properties_data = CardsData().return_dict_card_data()
+        # The horizontal will be increasing each time we add a card horizontally and the vertical each time we add a
+        # card vertically
         horizontal = 1
         vertical = 1
         counter = 0
+        # In this running test we only have 22 cards in properties, so the program won't build more than 22 blocks
         for key in properties_data.keys():
+            # in the Rect function point_x is the left point and point_y the top. The other two numbers is width
+            # and height.
             if counter < 11:
-                point_x = horizontal * 50
-                point_y = vertical * 30
-                new_rect = pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(point_x, point_y, 50, 70), 1)
+                point_x = horizontal * 70
+                point_y = vertical * 50
+                pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(point_x, point_y, 70, 50), 1)
                 counter += 1
-                horizontal +=1
+                # we are only increasing the horizontal counter because the blocks won't be going vertically down
+                horizontal += 1
+            elif 10 < counter < 21:
+                vertical += 1
+                point_x = 11 * 70
+                point_y = vertical * 50
+                pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(point_x, point_y, 70, 50), 1)
+                counter += 1
+                print('Point_y before:', point_y)
+                print('Point_x:', point_x)
+            elif 20 < counter < 31:
+                print('last counter:', counter)
+                # At this point we are decreasing the coordinate points going backwards to the board to close the loop
+                horizontal -= 2
+                # We have gone 10 times vertically down
+                point_y = 11 * 50
+                print('Point_y: ', point_y)
+                point_x = horizontal * 70
+                print('Point_x:', point_x)
+                pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(point_x, point_y, 70, 50), 1)
+                counter += 1
+                print('Counter: ', counter)
+            else:
+                break
             pygame.display.flip()
 
 
