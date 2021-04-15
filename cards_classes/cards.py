@@ -6,8 +6,9 @@ import pygame
 class Cards:
 
     """Name, owner and saleable will be available across all cards"""
-    def __init__(self, name, saleable, owner=None):
+    def __init__(self, name, saleable, board_loc, owner=None):
         self.name = name
+        self.board_loc = board_loc
         self.saleable = saleable
         self.owner = owner
 
