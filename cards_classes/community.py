@@ -7,6 +7,7 @@ class Community(Cards):
 
     def __init__(self, card_name, saleable, board_loc, message):
         super().__init__(self, card_name, saleable, board_loc)
+        self.name = card_name
         self.message = message
 
     def return_card_message(self):

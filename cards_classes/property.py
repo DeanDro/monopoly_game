@@ -10,8 +10,17 @@ class Properties(Cards):
     def __init__(self, name, saleable, board_loc, value, rent, resell_value, house_value, hotel_value):
         super().__init__(self, name, saleable, board_loc)
         self.value = value
+        self.name = name
         self.rent = rent
         self.resell_value = resell_value
         self.house_value = house_value
         self.hotel_value = hotel_value
 
+    def return_value(self):
+        return self.value
+
+    def return_name(self):
+        return self.name
+
+    def return_rent(self):
+        return self.rent

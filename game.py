@@ -18,6 +18,7 @@ class Game:
         pygame.init()
         self.screen = pygame.display.set_mode((1200, 700))
         self.running = True
+        self.default_font = pygame.font.get_default_font()
         self.create_cards_on_board()
         while self.running:
             for event in pygame.event.get():
@@ -39,14 +40,17 @@ class Game:
         # card vertically
         horizontal = 1
         vertical = 1
-        # In this running test we only have 22 cards in properties, so the program won't build more than 22 blocks
-        for i in range(41):
+        # When we stored the data, we set the board to start from location 0
+        for i in range(0, 40):
             # in the Rect function point_x is the left point and point_y the top. The other two numbers is width
             # and height.
             if i < 11:
                 point_x = horizontal * 70
                 point_y = vertical * 50
                 pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(point_x, point_y, 70, 50), 1)
+
+                # This is the helper method to paste the card names on the surface
+                self.return_wrapped_card_name(properties_data, i, point_x, point_y, self.screen)
                 # we are only increasing the horizontal counter because the blocks won't be going vertically down
                 horizontal += 1
             elif 10 < i < 21:
@@ -54,19 +58,52 @@ class Game:
                 point_x = 11 * 70
                 point_y = vertical * 50
                 pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(point_x, point_y, 70, 50), 1)
-            elif 20 < i < 32:
+                self.return_wrapped_card_name(properties_data, i, point_x, point_y, self.screen)
+            elif 20 < i < 31:
                 # At this point we are decreasing the coordinate points going backwards to the board to close the loop
-                horizontal -= 1
+                # horizontal -= 1
                 # We have gone 10 times vertically down
                 point_y = 11 * 50
                 point_x = horizontal * 70
                 pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(point_x, point_y, 70, 50), 1)
+                self.return_wrapped_card_name(properties_data, i, point_x, point_y, self.screen)
+                # At this point we are decreasing the coordinate points going backwards to the board to close the loop
+                horizontal -= 1
             else:
                 vertical -= 1
                 point_x = 70
                 point_y = vertical * 50
                 pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(point_x, point_y, 70, 50), 1)
+                self.return_wrapped_card_name(properties_data, i, point_x, point_y, self.screen)
             pygame.display.flip()
+
+    def return_wrapped_card_name(self, dictionary_with_data, dictionary_position, point_x, point_y, surface):
+        """This method returns an image with the name of a card, wrapped to two lines if the name is longer than
+        10 letters, so it can be pasted on the surface. It takes five arguments, the dictionary with the data,
+        the position in the dictionary we want to extract data from, point_x and point_y which are the x and y
+        coordinates for when we want the name to start appearing in the surface and the surface we want to paste
+        the images on.
+        """
+        font_renderer = pygame.font.Font(self.default_font, 10)
+        card = dictionary_with_data.get(dictionary_position).return_name()
+        if len(card) > 10:
+            str1 = ''
+            str2 = ''
+            counter = 0
+            for character in str(card):
+                if counter < 10:
+                    str1 += character
+                    counter += 1
+                else:
+                    str2 += character
+                    counter += 1
+            label1 = font_renderer.render(str1, 1, (255, 255, 255))
+            label2 = font_renderer.render(str2, 1, (255, 255, 255))
+            surface.blit(label1, (point_x + 5, point_y + 5))
+            surface.blit(label2, (point_x + 5, point_y + 15))
+        else:
+            label = font_renderer.render(card, 1, (255, 255, 255))
+            surface.blit(label, (point_x + 5, point_y + 5))
 
 
 class CardsData:
@@ -98,9 +135,10 @@ class CardsData:
         hotel_value = self.cities_data['hotel value']
         board_locations = self.cities_data['Board Location']
         for i in range(0, len(self.cities_data.index)):
-            new_card = Properties(city_names[i], True, board_locations[i], sell_value[i], rent_value[i],
-                                  resell_value[i], house_value[i], hotel_value[i])
-            self.complete_cards_dictionary[board_locations[i]] = new_card
+            self.complete_cards_dictionary[board_locations[i]] = Properties(city_names[i], True, board_locations[i],
+                                                                            sell_value[i], rent_value[i],
+                                                                            resell_value[i], house_value[i],
+                                                                            hotel_value[i])
 
     def populate_special_cards(self):
         """Method to populate complete_dict with special type cards.
@@ -109,10 +147,10 @@ class CardsData:
         money_get = self.special_data['Money Get']
         money_pay = self.special_data['Money Lost']
         action_card = self.special_data['Action']
-        board_loc = self.cities_data['Board Location']
+        board_loc = self.special_data['Board Location']
         for i in range(0, len(self.special_data.index)):
-            new_card = SpecialCards(block_name[i], False, board_loc[i], money_get[i], money_pay[i], action_card[i])
-            self.complete_cards_dictionary[board_loc[i]] = new_card
+            self.complete_cards_dictionary[board_loc[i]] = SpecialCards(block_name[i], False, board_loc[i],
+                                                                        money_get[i], money_pay[i], action_card[i])
 
     def populate_transportation(self):
         """Method to populate complete_dict with transportation cards.
@@ -123,8 +161,8 @@ class CardsData:
         rent = self.transportation_data['Rent']
         board_loc = self.transportation_data['Board Location']
         for i in range(0, len(self.transportation_data.index)):
-            new_card = Transportation(route[i], True, board_loc, sell_value[i], resell_value[i], rent[i])
-            self.complete_cards_dictionary[board_loc[i]] = new_card
+            self.complete_cards_dictionary[board_loc[i]] = Transportation(route[i], True, board_loc, sell_value[i],
+                                                                          resell_value[i], rent[i])
 
     def populate_energy_dict(self):
         """Method to populate complete dictionary with the energy cards.
@@ -136,8 +174,8 @@ class CardsData:
         # The board location starts counting from 0 for the cards.
         board_loc = self.energy_data['Board Location']
         for i in range(0, len(self.energy_data.index)):
-            new_card = Energy(station[i], True, board_loc, sell_value[i], resell_value[i], rent[i])
-            self.complete_cards_dictionary[board_loc[i]] = new_card
+            self.complete_cards_dictionary[board_loc[i]] = Energy(station[i], True, board_loc,
+                                                                  sell_value[i], resell_value[i], rent[i])
 
     def populate_chance_dict(self):
         """Method to populate complete dictionary with all the chance cards.
@@ -151,7 +189,7 @@ class CardsData:
         board_loc = [2, 16, 27]
         for i in range(0, 3):
             card_num = random.randint(1, 10)
-            new_card = Chance(card_name[card_num], True, int(board_loc[i]), message[card_num])
+            new_card = Chance(card_name[1], True, int(board_loc[i]), message[1])
             self.complete_cards_dictionary[int(board_loc[i])] = new_card
 
     def populate_community_cards(self):
@@ -163,9 +201,9 @@ class CardsData:
         # less for each board location
         board_loc = [13, 22, 37]
         for i in range(0, 3):
-            card_num = random.randint(1, 10)
-            new_card = Community(card_name[card_num], True, int(board_loc[i]), message[card_num])
-            self.complete_cards_dictionary[int(board_loc[i])] = new_card
+            # card_num = random.randint(1, 11)
+            new_card = Community(card_name[1], True, board_loc[i], message[1])
+            self.complete_cards_dictionary[board_loc[i]] = new_card
 
     def return_complete_dictionary(self):
         """Method to return the dictionary with all the cards data.

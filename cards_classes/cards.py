@@ -19,3 +19,9 @@ class Cards:
     # Check who is the property owner
     def check_ownership(self):
         return self.owner
+
+    def return_name(self):
+        """In order for this method to return the name value for all children classes, each child class must
+        have a global variable named self.name
+        """
+        return self.name
