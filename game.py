@@ -60,8 +60,11 @@ class Game:
                 pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(point_x, point_y, 70, 50), 1)
                 self.return_wrapped_card_name(properties_data, i, point_x, point_y, self.screen)
             elif 20 < i < 31:
-                # At this point we are decreasing the coordinate points going backwards to the board to close the loop
-                # horizontal -= 1
+                # For the first time it enters in this loop we push the horizontal multiple 2 steps back because
+                # in the last iteration of the first conditional, after it completed the last horizontal placement
+                # it increased the horizontal value by 1.
+                if i < 22:
+                    horizontal -= 2
                 # We have gone 10 times vertically down
                 point_y = 11 * 50
                 point_x = horizontal * 70
