@@ -23,7 +23,6 @@ class CrazyMonopoly(tk.Frame):
         self.create_dropdown(['1', '2', '3'], 1, 3)
         self.create_button('Start Game', 0, 4, self.start_game, 50)
         self.create_button('Cancel', 1, 4, self.close_game)
-        self.start_game = None
 
     # Function to create a label giving the text and placement
     def create_labels(self, label_text, column_loc, row_loc, column_length=None, x_gap=None, y_gap=None):
@@ -34,7 +33,7 @@ class CrazyMonopoly(tk.Frame):
 
     # Helper function to create input
     def create_input_text(self, column_loc, row_loc):
-        input_box = tk.Entry()
+        input_box = tk.Entry(self.master, textvariable = self.username_value, font=('calibre', 10, 'normal'))
         input_box.grid(column=column_loc, row=row_loc)
 
     # Method to create dropdown box
@@ -58,7 +57,12 @@ class CrazyMonopoly(tk.Frame):
 
     # Method to start the monopoly game
     def start_game(self) -> None:
-        self.start_game = Game()
+        """
+        We are calling the start game function and we pass the username value. For testing purposes we also pass that
+        there will be 3 opponents and that users character is a boat.
+        """
+        username = self.username_value.get()
+        self.start_game = Game(username, 3, 'Boat')
 
 
 root = tk.Tk()

@@ -14,9 +14,11 @@ from cards_classes.transportation import Transportation
 
 class Game:
 
-    def __init__(self):
+    def __init__(self, username, num_opponents, user_character):
         pygame.init()
-        self.screen = pygame.display.set_mode((1200, 700))
+        self._username = username
+        self._character = user_character
+        self.screen = pygame.display.set_mode((1360, 700))
         self.running = True
         self.default_font = pygame.font.get_default_font()
         self.create_cards_on_board()
