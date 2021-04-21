@@ -14,13 +14,15 @@ class CrazyMonopoly(tk.Frame):
         super().__init__(master)
         self.master = master
         self.username_value = tk.StringVar()
+        self._number_players = tk.StringVar()
+        self._player_character = tk.StringVar()
         self.create_labels('Crazy Monopoly', 0, 0, 2)
         self.create_labels('Username', 0, 1, 1, 15, 15)
         self.create_input_text(1, 1)
         self.create_labels('Select your character', 0, 2, 1, 15, 15)
-        self.create_dropdown(['Car', 'Boat', 'Airplane', 'Boot'], 1, 2)
+        self.create_dropdown(['Car', 'Boat', 'Airplane', 'Boot'], 1, 2, self._player_character)
         self.create_labels('Number of opponents', 0, 3, 1, 15, 20)
-        self.create_dropdown(['1', '2', '3'], 1, 3)
+        self.create_dropdown(['1', '2', '3'], 1, 3, self._number_players)
         self.create_button('Start Game', 0, 4, self.start_game, 50)
         self.create_button('Cancel', 1, 4, self.close_game)
 
@@ -37,10 +39,9 @@ class CrazyMonopoly(tk.Frame):
         input_box.grid(column=column_loc, row=row_loc)
 
     # Method to create dropdown box
-    def create_dropdown(self, options, column_loc, row_loc):
-        selection = tk.StringVar()
-        selection.set(options[0])
-        dropdown = tk.OptionMenu(self.master, selection, *options)
+    def create_dropdown(self, options, column_loc, row_loc, variable):
+        variable.set(options[0])
+        dropdown = tk.OptionMenu(self.master, variable, *options)
         dropdown.configure(fg='#FFFFFF')
         dropdown.configure(background='black')
         dropdown.grid(column=column_loc, row=row_loc)
@@ -62,7 +63,9 @@ class CrazyMonopoly(tk.Frame):
         there will be 3 opponents and that users character is a boat.
         """
         username = self.username_value.get()
-        self.start_game = Game(username, 3, 'Boat')
+        number_of_opponents = self._number_players.get()
+        player_character = self._player_character.get()
+        self.start_game = Game(username, number_of_opponents, player_character)
 
 
 root = tk.Tk()

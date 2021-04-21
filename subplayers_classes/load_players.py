@@ -30,12 +30,22 @@ class LoadPlayers:
         default_font = pygame.font.get_default_font()
         font = pygame.font.Font(default_font, 15)
         pl_name = font.render(self._player_name, 1, (255, 255, 255))
+        pl_cash = font.render('$'+str(self._human_player_cash), 1, (255, 255, 255))
+        pl_total_value = font.render('$'+str(self._human_total_value), 1, (255, 255, 255))
         self._screen.blit(pl_name, (1000, 50))
+        self._screen.blit(pl_cash, (1150, 50))
+        self._screen.blit(pl_total_value, (1250, 50))
+
+    def create_opponents_initial_values(self):
+        """It creates a dictionary that includes all the information for the ai initial values"""
 
     def create_ai_opponents(self):
+        """This method creates the image of opponents and attaches it to the dashboard"""
+        starting_point = 2
         for ai in range(0, self._ai_opponents):
-            loc_y = ai*100
+            loc_y = starting_point * 50
             ai_name = 'Player' + str(ai)
-            font =pygame.font.Font(pygame.font.get_default_font(), 15)
+            font = pygame.font.Font(pygame.font.get_default_font(), 15)
             ai_player = font.render(ai_name, 1, (255, 255, 255))
             self._screen.blit(ai_player, (1000, loc_y))
+            starting_point += 1
