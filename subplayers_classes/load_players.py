@@ -1,4 +1,5 @@
 # Class to load the human player and the ai players in the game
+import pygame.font
 
 from subplayers_classes.human_player import HumanPlayer
 from subplayers_classes.ai_player import AIPlayer
@@ -12,17 +13,29 @@ class LoadPlayers:
     ai opponents.
     """
 
-    def __init__(self, screen, human_player_name, human_total_value, **ai_details):
+    def __init__(self, screen, human_player_name, human_total_value, human_player_cash, ai_details):
         """
         Instantiate a load players class and pass four arguments, the main screen where all information will be
         displayed, the human player username, the human total value and a dictionary with all information
         for the ai players.
         """
         self._screen = screen
-        self.player_details = human_player_name
-        self.human_total_value = human_total_value
+        self._player_name = human_player_name
+        self._human_total_value = human_total_value
+        self._human_player_cash = human_player_cash
+        self._ai_opponents = ai_details
 
     def return_images_on_screen(self):
-        label_text = self.player_details + ': ' + self.human_total_value
-        human_details = tk.Label(self._screen, text=label_text)
-        return human_details
+        """This function creates a label with human players information and displays it on the page"""
+        default_font = pygame.font.get_default_font()
+        font = pygame.font.Font(default_font, 15)
+        pl_name = font.render(self._player_name, 1, (255, 255, 255))
+        self._screen.blit(pl_name, (1000, 50))
+
+    def create_ai_opponents(self):
+        for ai in range(0, self._ai_opponents):
+            loc_y = ai*100
+            ai_name = 'Player' + str(ai)
+            font =pygame.font.Font(pygame.font.get_default_font(), 15)
+            ai_player = font.render(ai_name, 1, (255, 255, 255))
+            self._screen.blit(ai_player, (1000, loc_y))

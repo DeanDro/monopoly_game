@@ -10,6 +10,7 @@ from cards_classes.chance import Chance
 from cards_classes.community import Community
 from cards_classes.energy import Energy
 from cards_classes.transportation import Transportation
+from subplayers_classes.load_players import LoadPlayers
 
 
 class Game:
@@ -18,10 +19,16 @@ class Game:
         pygame.init()
         self._username = username
         self._character = user_character
+        self._number_opponents = int(num_opponents)
         self.screen = pygame.display.set_mode((1360, 700))
         self.running = True
         self.default_font = pygame.font.get_default_font()
         self.create_cards_on_board()
+        # players name and information are loaded in the LoadPlayers class and there we generate the images
+        # to be display on the regular screen.
+        self.player = LoadPlayers(self.screen, self._username, 200000, 200000, self._number_opponents)
+        self.player.return_images_on_screen()
+        self.player.create_ai_opponents()
         while self.running:
             for event in pygame.event.get():
                 self.event_handler(event)
