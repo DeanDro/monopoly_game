@@ -8,7 +8,7 @@ class Players:
     A class that represents every player in the game.
     """
 
-    def __init__(self, username_given, character_given):
+    def __init__(self, username_given, character_given, human=False):
         """
         Initialize the class by passing for arguments user name and character
         """
@@ -18,15 +18,20 @@ class Players:
         self._free = True
         self._cards = dict()
         self._total_value = 200000
-        self._human = None
+        self._human = human
 
     # Method to get players total value
-    def get_player_value(self):
+    def get_total_value(self):
+        """Returns players total value"""
         return self._total_value
 
     # Method to add value to the player
     def set_player_value(self, additional_value):
         self._total_value += additional_value
+
+    def set_cash(self, new_money):
+        """Method to set cash value for the user"""
+        self._money = new_money
 
     # Set if the user is human or AI
     def set_human_status(self, status):
@@ -41,3 +46,19 @@ class Players:
         Method to set the character value
         """
         self._character = new_character
+
+    def get_player_name(self):
+        """Return user name"""
+        return self._username
+
+    def get_character(self):
+        """Returns players character"""
+        return self._character
+
+    def get_money(self):
+        """Returns available cash"""
+        return self._money
+
+    def get_cards(self):
+        """Returns the dictionary with game cards"""
+        return self._cards

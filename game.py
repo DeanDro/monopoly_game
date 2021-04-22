@@ -11,6 +11,7 @@ from cards_classes.community import Community
 from cards_classes.energy import Energy
 from cards_classes.transportation import Transportation
 from subplayers_classes.load_players import LoadPlayers
+from players import Players
 
 
 class Game:
@@ -24,9 +25,12 @@ class Game:
         self.running = True
         self.default_font = pygame.font.get_default_font()
         self.create_cards_on_board()
+        # Initialize the human player and the ai players dictionary
+        self._human_player = self.load_info_for_human()
+        self._ai_dictionary = self.load_info_for_ai()
         # players name and information are loaded in the LoadPlayers class and there we generate the images
         # to be display on the regular screen.
-        self.player = LoadPlayers(self.screen, self._username, 200000, 200000, self._number_opponents)
+        self.player = LoadPlayers(self.screen, self._human_player, self._ai_dictionary  )
         self.player.return_images_on_screen()
         self.player.create_ai_opponents()
         while self.running:
@@ -116,6 +120,21 @@ class Game:
         else:
             label = font_renderer.render(card, 1, (255, 255, 255))
             surface.blit(label, (point_x + 5, point_y + 5))
+
+    def load_info_for_human(self):
+        """this is a method to load username and all information for the human player"""
+        human_player = Players(self._username, self._character, True)
+        return human_player
+
+    def load_info_for_ai(self):
+        """This is a method to return a dictionary with all ai players"""
+        ai_players = dict()
+        ai_characters = ['Peanut', 'Apple', 'Orange']
+        for i in range(0, self._number_opponents):
+            opponent_name = 'Player' + str(i+1)
+            ai_ = Players(opponent_name, ai_characters[i])
+            ai_players[i] = ai_
+        return ai_players
 
 
 class CardsData:
