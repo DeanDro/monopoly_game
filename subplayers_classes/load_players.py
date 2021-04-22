@@ -50,9 +50,12 @@ class LoadPlayers:
             ai_total_value = ai_opponent.get_total_value()
             font = pygame.font.Font(pygame.font.get_default_font(), 15)
             ai_player = font.render(ai_name, 1, (255, 255, 255))
-            ai_cash = font.render(str(ai_money), 1, (255, 255, 255))
-            ai_value = font.render(str(ai_total_value), 1, (255, 255, 255))
+            ai_cash = font.render('$' + str(ai_money), 1, (255, 255, 255))
+            ai_value = font.render('$' + str(ai_total_value), 1, (255, 255, 255))
             self._screen.blit(ai_player, (1000, loc_y))
             self._screen.blit(ai_cash, (1150, loc_y))
             self._screen.blit(ai_value, (1250, loc_y))
             starting_point += 1
+
+    def update_player_data(self, player_chosen):
+        """The method updates the numbers on the game screen for a selected player"""
