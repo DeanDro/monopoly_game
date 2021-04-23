@@ -27,7 +27,7 @@ class CardsMegaClass:
         self._message = message
         self._card_type = card_type
 
-    def get_card_name(self):
+    def return_name(self):
         """
         Get the card name
         :return:
@@ -47,3 +47,88 @@ class CardsMegaClass:
         :return:
         """
         return self._board_loc
+
+    def get_owner(self):
+        """
+        Returns the owner of the class
+        :return:
+        """
+        return self._owner
+
+    def get_money_receive(self):
+        """
+        Returns if the player in this card can get money
+        :return:
+        """
+        return self._money_receive
+
+    def get_money_pay(self):
+        """
+        Returns if you have to pay money
+        :return:
+        """
+        return self._money_pay
+
+    def get_action(self):
+        """
+        Returns if the player has to take some action after this card
+        :return:
+        """
+        return self._action
+
+    def get_card_cost(self):
+        """
+        Returns the cost to buy the card
+        :return:
+        """
+        return self._card_cost
+
+    def get_card_rent(self):
+        """
+        Returns the value a player has to pay for falling in this card
+        :return:
+        """
+        return self._card_rent
+
+    def get_card_resell_value(self):
+        """
+        Returns the resell value of a card
+        :return:
+        """
+        return self._resell_value
+
+    def get_house_value(self):
+        """
+        Returns the value to put a house in this card
+        :return:
+        """
+        return self._house_value
+
+    def get_hotel_value(self):
+        """
+        Returns the value to build a hotel on this card
+        :return:
+        """
+        return self._hotel_value
+
+    def get_message(self):
+        """
+        Returns the message that a card might hold
+        :return:
+        """
+        return self._message
+
+    def get_card_type(self):
+        """
+        Returns the type of the card. For example if it is a property card, energy, special, etc.
+        :return:
+        """
+        return self._card_type
+
+    def set_card_owner(self, new_owner):
+        """
+        Sets the new owner for a card that purchase it. It takes one argument, the player who bought the card.
+        :param new_owner:
+        :return:
+        """
+        self._owner = new_owner

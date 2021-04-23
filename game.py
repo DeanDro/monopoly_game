@@ -12,6 +12,7 @@ from cards_classes.energy import Energy
 from cards_classes.transportation import Transportation
 from subplayers_classes.load_players import LoadPlayers
 from players import Players
+from cards_classes.cards_super_class import CardsMegaClass
 
 
 class Game:
@@ -166,10 +167,13 @@ class CardsData:
         hotel_value = self.cities_data['hotel value']
         board_locations = self.cities_data['Board Location']
         for i in range(0, len(self.cities_data.index)):
-            self.complete_cards_dictionary[board_locations[i]] = Properties(city_names[i], True, board_locations[i],
-                                                                            sell_value[i], rent_value[i],
-                                                                            resell_value[i], house_value[i],
-                                                                            hotel_value[i])
+            self.complete_cards_dictionary[board_locations[i]] = CardsMegaClass(city_names[i], True, board_locations[i],
+                                                                                card_cost=sell_value[i],
+                                                                                card_rent=rent_value[i],
+                                                                                resell_value=resell_value[i],
+                                                                                house_value=house_value[i],
+                                                                                hotel_value=hotel_value[i],
+                                                                                card_type='Property')
 
     def populate_special_cards(self):
         """Method to populate complete_dict with special type cards.
@@ -180,8 +184,11 @@ class CardsData:
         action_card = self.special_data['Action']
         board_loc = self.special_data['Board Location']
         for i in range(0, len(self.special_data.index)):
-            self.complete_cards_dictionary[board_loc[i]] = SpecialCards(block_name[i], False, board_loc[i],
-                                                                        money_get[i], money_pay[i], action_card[i])
+            self.complete_cards_dictionary[board_loc[i]] = CardsMegaClass(block_name[i], False, board_loc[i],
+                                                                          money_receive=money_get[i],
+                                                                          money_pay=money_pay[i],
+                                                                          action=action_card[i],
+                                                                          card_cost='Special')
 
     def populate_transportation(self):
         """Method to populate complete_dict with transportation cards.
@@ -192,8 +199,11 @@ class CardsData:
         rent = self.transportation_data['Rent']
         board_loc = self.transportation_data['Board Location']
         for i in range(0, len(self.transportation_data.index)):
-            self.complete_cards_dictionary[board_loc[i]] = Transportation(route[i], True, board_loc, sell_value[i],
-                                                                          resell_value[i], rent[i])
+            self.complete_cards_dictionary[board_loc[i]] = CardsMegaClass(route[i], True, board_loc[i],
+                                                                          card_cost=sell_value[i],
+                                                                          resell_value=resell_value[i],
+                                                                          card_rent=rent[i],
+                                                                          card_type='Transportation')
 
     def populate_energy_dict(self):
         """Method to populate complete dictionary with the energy cards.
@@ -205,8 +215,11 @@ class CardsData:
         # The board location starts counting from 0 for the cards.
         board_loc = self.energy_data['Board Location']
         for i in range(0, len(self.energy_data.index)):
-            self.complete_cards_dictionary[board_loc[i]] = Energy(station[i], True, board_loc,
-                                                                  sell_value[i], resell_value[i], rent[i])
+            self.complete_cards_dictionary[board_loc[i]] = CardsMegaClass(station[i], True, board_loc[i],
+                                                                          card_cost=sell_value[i],
+                                                                          resell_value=resell_value[i],
+                                                                          card_rent=rent[i],
+                                                                          card_type='Energy')
 
     def populate_chance_dict(self):
         """Method to populate complete dictionary with all the chance cards.
@@ -220,8 +233,9 @@ class CardsData:
         board_loc = [2, 16, 27]
         for i in range(0, 3):
             card_num = random.randint(1, 10)
-            new_card = Chance(card_name[1], True, int(board_loc[i]), message[1])
-            self.complete_cards_dictionary[int(board_loc[i])] = new_card
+            self.complete_cards_dictionary[int(board_loc[i])] = CardsMegaClass(card_name[i], False, int(board_loc[i]),
+                                                                               message=message[1],
+                                                                               card_type='Chance')
 
     def populate_community_cards(self):
         """Method to populate community cards in the complete_card dictionary.
@@ -233,8 +247,8 @@ class CardsData:
         board_loc = [13, 22, 37]
         for i in range(0, 3):
             # card_num = random.randint(1, 11)
-            new_card = Community(card_name[1], True, board_loc[i], message[1])
-            self.complete_cards_dictionary[board_loc[i]] = new_card
+            self.complete_cards_dictionary[board_loc[i]] = CardsMegaClass(card_name[1], False, board_loc=board_loc[i],
+                                                                          message=message[1], card_type='Community')
 
     def return_complete_dictionary(self):
         """Method to return the dictionary with all the cards data.
