@@ -3,13 +3,6 @@ import random
 
 import pygame
 from players import Players
-from cards_classes.cards import Cards
-from cards_classes.chance import Chance
-from cards_classes.community import Community
-from cards_classes.energy import Energy
-from cards_classes.property import Properties
-from cards_classes.special_cards import SpecialCards
-from cards_classes.transportation import Transportation
 
 
 class MonopolyGameRules:
@@ -38,7 +31,7 @@ class MonopolyGameRules:
             self._players_positions['ai_3'] += dice
 
     def check_card_status_and_decide(self, card):
-        """If ai player, checks whether the card is owned by someone and decides to purchase or not."""
+        """AI player checks whether the card is owned by someone and decides to purchase or not."""
         if card.check_ownership == None:
-            if not isinstance(card, Chance) or not isinstance(card, Community) or not isinstance(card, SpecialCards):
-                pass
+            pass
+

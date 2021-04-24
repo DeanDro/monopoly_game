@@ -4,12 +4,6 @@ import random
 import pygame
 import sys
 import pandas
-from cards_classes.property import Properties
-from cards_classes.special_cards import SpecialCards
-from cards_classes.chance import Chance
-from cards_classes.community import Community
-from cards_classes.energy import Energy
-from cards_classes.transportation import Transportation
 from subplayers_classes.load_players import LoadPlayers
 from players import Players
 from cards_classes.cards_super_class import CardsMegaClass
