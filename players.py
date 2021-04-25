@@ -33,6 +33,11 @@ class Players:
         """Method to set cash value for the user"""
         self._money = new_money
 
+    def add_cash(self, new_money):
+        """Method to add an amount in players account and total value"""
+        self._money += new_money
+        self._total_value += new_money
+
     # Set if the user is human or AI
     def set_human_status(self, status):
         self._human = status

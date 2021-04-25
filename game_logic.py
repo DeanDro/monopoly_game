@@ -35,3 +35,33 @@ class MonopolyGameRules:
         if card.check_ownership == None:
             pass
 
+    def load_players_positions(self, player_name, players_turn):
+        """
+        Method that takes the position of a player in terms of the number of the box and returns the coordinates of the
+        player's character on the map. If the character passes starting point it get $200K in his account
+        :return: The return value is a tuple with (x-coordinates, y-coordinates)
+        """
+        # x and y coordinates
+        pos_x = 0
+        pos_y = 0
+        box_num = self._players_positions[player_name]
+        if 0 <= box_num <=10:
+            pos_x = (11 - (11 - box_num)) * 70
+            pos_y = 11 * 50
+        elif 11 <= box_num <= 20:
+            pos_x = 70
+            pos_y = (11 - (11 - (box_num - 10))) * 50
+        elif 21 <= box_num <= 30:
+            pos_x = ((box_num - 20) + 1) * 70
+            pos_y = 50
+        elif 31 <= box_num <= 39:
+            pos_x = 11 * 70
+            pos_y = ((box_num - 30) + 1) * 50
+        else:
+            box_num -= 39
+            # We setup the new position after it has gone through the starting point and we recursively call the
+            # function again
+            self._players_positions[player_name] = box_num
+            players_turn.add_cash(200000)
+            self.load_players_positions(player_name, players_turn)
+        return (pos_x, pos_y)

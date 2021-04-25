@@ -13,10 +13,21 @@ class Game:
 
     def __init__(self, username, num_opponents, user_character):
         pygame.init()
+        self._background_blue = (60, 25, 60)
+        self._background_orange = (236, 181, 22)
         self._username = username
         self._character = user_character
+
+        # We create placeholders for the images of the characters for the human and ai players. The actual loading
+        # will happen later depending.
+        self._human_character_img = None
+        self._ai1_char_img = None
+        self._ai2_char_img = None
+        self._ai3_char_img = None
+
         self._number_opponents = int(num_opponents)
         self.screen = pygame.display.set_mode((1360, 700))
+        self.screen.fill(self._background_blue)
         self.running = True
         self.default_font = pygame.font.get_default_font()
         self.create_cards_on_board()
@@ -28,6 +39,10 @@ class Game:
         self.player = LoadPlayers(self.screen, self._human_player, self._ai_dictionary  )
         self.player.return_images_on_screen()
         self.player.create_ai_opponents()
+
+        # Control panel for the game
+        self.roll_dice_button()
+
         while self.running:
             for event in pygame.event.get():
                 self.event_handler(event)
@@ -130,6 +145,23 @@ class Game:
             ai_ = Players(opponent_name, ai_characters[i])
             ai_players[i] = ai_
         return ai_players
+
+    def roll_dice_button(self):
+        """
+        Method to create the button for rolling dice when player plays.
+        """
+        button_font = pygame.font.Font(pygame.font.get_default_font(), 20)
+        roll_dice = button_font.render('Roll Dice', 1, (255, 255, 255))
+        pygame.draw.rect(self.screen, self._background_orange, (990, 340, 105, 40))
+        pygame.display.update()
+        self.screen.blit(roll_dice, (1000, 350))
+
+    def place_characters_on_board(self):
+        """
+        Takes the players coordinates from the game_logic class and loads the player's character on the board. Takes
+        two arguments, the coordinates for the character in a tuple and characters name
+        :return:
+        """
 
 
 class CardsData:
