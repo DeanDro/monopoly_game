@@ -11,6 +11,9 @@ from cards_classes.cards_super_class import CardsMegaClass
 
 class Game:
 
+    # A list of all possible characters in the game
+    LIST_OF_CHARACTERS = ['Airplane', 'Boat', 'Boot', 'Car']
+
     def __init__(self, username, num_opponents, user_character):
         pygame.init()
         self._background_blue = (60, 25, 60)
@@ -134,15 +137,23 @@ class Game:
     def load_info_for_human(self):
         """this is a method to load username and all information for the human player"""
         human_player = Players(self._username, self._character, True)
+        character_name = self.LIST_OF_CHARACTERS.pop(self._character)
+        self._human_character_img = pygame.image.load(character_name)
         return human_player
 
     def load_info_for_ai(self):
         """This is a method to return a dictionary with all ai players"""
         ai_players = dict()
-        ai_characters = ['Peanut', 'Apple', 'Orange']
         for i in range(0, self._number_opponents):
             opponent_name = 'Player' + str(i+1)
-            ai_ = Players(opponent_name, ai_characters[i])
+            character_ai = self.LIST_OF_CHARACTERS.pop()
+            ai_ = Players(opponent_name, character_ai)
+            if self._ai1_char_img is None:
+                self._ai1_char_img = pygame.image.load(character_ai)
+            elif self._ai2_char_img is None:
+                self._ai2_char_img = pygame.image.load(character_ai)
+            else:
+                self._ai3_char_img = pygame.image.load(character_ai)
             ai_players[i] = ai_
         return ai_players
 
@@ -162,6 +173,10 @@ class Game:
         two arguments, the coordinates for the character in a tuple and characters name
         :return:
         """
+        list_available_characters = ['Airplane', 'Boot', 'Car', 'Boat']
+        list_available_characters.pop(self._character)
+        for i in range(0, self._number_opponents):
+            pass
 
 
 class CardsData:
