@@ -22,7 +22,7 @@ class CrazyMonopoly(tk.Frame):
         self.create_labels('Select your character', 0, 2, 1, 15, 15)
         self.create_dropdown(['Car', 'Boat', 'Airplane', 'Boot'], 1, 2, self._player_character)
         self.create_labels('Number of opponents', 0, 3, 1, 15, 20)
-        self.create_dropdown(['1', '2', '3'], 1, 3, self._number_players)
+        self.create_dropdown(['1', '2'], 1, 3, self._number_players)
         self.create_button('Start Game', 0, 4, self.start_game, 50)
         self.create_button('Cancel', 1, 4, self.close_game)
 

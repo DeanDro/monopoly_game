@@ -7,6 +7,7 @@ import pandas
 from subplayers_classes.load_players import LoadPlayers
 from players import Players
 from cards_classes.cards_super_class import CardsMegaClass
+from game_logic import MonopolyGameRules
 
 
 class Game:
@@ -34,9 +35,10 @@ class Game:
         self.running = True
         self.default_font = pygame.font.get_default_font()
         self.create_cards_on_board()
-        # Initialize the human player and the ai players dictionary
+        # Initialize the human player and the ai players dictionary and load them in the Monopoly Rules
         self._human_player = self.load_info_for_human()
         self._ai_dictionary = self.load_info_for_ai()
+        self._game_rules = self.initiate_game_logic()
         # players name and information are loaded in the LoadPlayers class and there we generate the images
         # to be display on the regular screen.
         self.player = LoadPlayers(self.screen, self._human_player, self._ai_dictionary  )
@@ -137,7 +139,8 @@ class Game:
     def load_info_for_human(self):
         """this is a method to load username and all information for the human player"""
         human_player = Players(self._username, self._character, True)
-        character_name = self.LIST_OF_CHARACTERS.pop(self._character)
+        character_index = self.LIST_OF_CHARACTERS.index(self._character)
+        character_name = str(self.LIST_OF_CHARACTERS.pop(character_index))+'.png'
         self._human_character_img = pygame.image.load(character_name)
         return human_player
 
@@ -147,13 +150,14 @@ class Game:
         for i in range(0, self._number_opponents):
             opponent_name = 'Player' + str(i+1)
             character_ai = self.LIST_OF_CHARACTERS.pop()
+            ai_img = str(character_ai)+'.png'
             ai_ = Players(opponent_name, character_ai)
             if self._ai1_char_img is None:
-                self._ai1_char_img = pygame.image.load(character_ai)
+                self._ai1_char_img = pygame.image.load(ai_img)
             elif self._ai2_char_img is None:
-                self._ai2_char_img = pygame.image.load(character_ai)
+                self._ai2_char_img = pygame.image.load(ai_img)
             else:
-                self._ai3_char_img = pygame.image.load(character_ai)
+                self._ai3_char_img = pygame.image.load(ai_img)
             ai_players[i] = ai_
         return ai_players
 
@@ -167,16 +171,32 @@ class Game:
         pygame.display.update()
         self.screen.blit(roll_dice, (1000, 350))
 
-    def place_characters_on_board(self):
+    def initiate_game_logic(self):
         """
-        Takes the players coordinates from the game_logic class and loads the player's character on the board. Takes
-        two arguments, the coordinates for the character in a tuple and characters name
+        This method looks at how many ai players are in the game and loads them in the game logic file along
+        with the human player. This will also place the characters on the board for each player
         :return:
         """
-        list_available_characters = ['Airplane', 'Boot', 'Car', 'Boat']
-        list_available_characters.pop(self._character)
-        for i in range(0, self._number_opponents):
-            pass
+        if self._number_opponents == 2:
+            ai_1 = self._ai_dictionary.get('Player1')
+            ai_2 = self._ai_dictionary.get('Player2')
+            self.screen.blit(self._human_character_img, (770, 580))
+            self.screen.blit(self._ai1_char_img, (790, 580))
+            self.screen.blit(self._ai2_char_img, (810, 580))
+            return MonopolyGameRules(self._human_player, ai_1, ai_2)
+        elif self._number_opponents == 3:
+            ai_1 = self._ai_dictionary.get('Player1')
+            ai_2 = self._ai_dictionary.get('Player2')
+            ai_3 = self._ai_dictionary.get('Player3')
+            self.screen.blit(self._human_character_img, (770, 580))
+            self.screen.blit(self._ai1_char_img, (790, 580))
+            self.screen.blit(self._ai2_char_img, (810, 580))
+            self.screen.blit(self._ai3_char_img, (830, 580))
+            return MonopolyGameRules(self._human_player, ai_1, ai_2, ai_3)
+        else:
+            self.screen.blit(self._human_character_img, (770, 580))
+            self.screen.blit(self._ai1_char_img, (790, 580))
+            return MonopolyGameRules(self._human_player, self._ai_dictionary.get('Player1'))
 
 
 class CardsData:
