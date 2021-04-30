@@ -27,7 +27,6 @@ class Game:
         self._human_character_img = None
         self._ai1_char_img = None
         self._ai2_char_img = None
-        self._ai3_char_img = None
 
         self._number_opponents = int(num_opponents)
         self.screen = pygame.display.set_mode((1360, 700))
@@ -47,6 +46,8 @@ class Game:
 
         # Control panel for the game
         self.roll_dice_button()
+        # Players turn tracks whose player turn is. It updates each time after a player has made a move
+        self._players_turns = 1
 
         while self.running:
             for event in pygame.event.get():
@@ -60,6 +61,14 @@ class Game:
             pygame.quit()
             # We add the sys.exit() so when the player presses quit exit the program all together
             sys.exit()
+        # Check for mouse click
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_coord = pygame.mouse.get_pos()
+            if 990 < mouse_coord[0] < 1095 and 340 < mouse_coord[1] < 380:
+                self._game_rules.roll_the_dice(self._players_turns)
+                self._players_turns += 1
+                self.update_players_position()
+                print('roll')
 
     # Method to get the cards from the Board class and draw the cards on the board
     def create_cards_on_board(self):
@@ -154,10 +163,8 @@ class Game:
             ai_ = Players(opponent_name, character_ai)
             if self._ai1_char_img is None:
                 self._ai1_char_img = pygame.image.load(ai_img)
-            elif self._ai2_char_img is None:
-                self._ai2_char_img = pygame.image.load(ai_img)
             else:
-                self._ai3_char_img = pygame.image.load(ai_img)
+                self._ai2_char_img = pygame.image.load(ai_img)
             ai_players[i] = ai_
         return ai_players
 
@@ -184,19 +191,18 @@ class Game:
             self.screen.blit(self._ai1_char_img, (790, 580))
             self.screen.blit(self._ai2_char_img, (810, 580))
             return MonopolyGameRules(self._human_player, ai_1, ai_2)
-        elif self._number_opponents == 3:
-            ai_1 = self._ai_dictionary.get('Player1')
-            ai_2 = self._ai_dictionary.get('Player2')
-            ai_3 = self._ai_dictionary.get('Player3')
-            self.screen.blit(self._human_character_img, (770, 580))
-            self.screen.blit(self._ai1_char_img, (790, 580))
-            self.screen.blit(self._ai2_char_img, (810, 580))
-            self.screen.blit(self._ai3_char_img, (830, 580))
-            return MonopolyGameRules(self._human_player, ai_1, ai_2, ai_3)
         else:
             self.screen.blit(self._human_character_img, (770, 580))
             self.screen.blit(self._ai1_char_img, (790, 580))
             return MonopolyGameRules(self._human_player, self._ai_dictionary.get('Player1'))
+
+    # Method refreshes player character to be in the correct box after the dishes have been rolled
+    def update_players_position(self):
+        base_x = 770
+        base_7 = 580
+        positions = self._game_rules.get_players_position()
+        print(positions)
+
 
 
 class CardsData:

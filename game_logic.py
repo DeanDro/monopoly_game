@@ -7,16 +7,15 @@ from players import Players
 
 class MonopolyGameRules:
 
-    def __init__(self, human_player, ai_player1, ai_player2=None, ai_player3=None):
+    def __init__(self, human_player, ai_player1, ai_player2=None):
         """Initialize the game and load all players"""
         self._human = human_player
         self._ai_player1 = ai_player1
         self._ai_player2 = ai_player2
-        self._ai_player3 = ai_player3
         # we create a dictionary that holds the location of each player. We initialize everyone at the beginning
         self._players_positions = {'human': 0, 'ai_1': 0, 'ai_2': 0, 'ai_3': 0}
 
-    def initiate_monopoly_game(self, turn_player):
+    def roll_the_dice(self, turn_player):
         """
         Moves the player 1 to 6 positions. It takes one argument, which players turn it is
         """
@@ -65,3 +64,7 @@ class MonopolyGameRules:
             players_turn.add_cash(200000)
             self.load_players_positions(player_name, players_turn)
         return (pos_x, pos_y)
+
+    # Method to get the position dictionary
+    def get_players_position(self):
+        return self._players_positions
