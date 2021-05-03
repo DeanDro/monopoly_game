@@ -13,21 +13,34 @@ class MonopolyGameRules:
         self._ai_player1 = ai_player1
         self._ai_player2 = ai_player2
         # we create a dictionary that holds the location of each player. We initialize everyone at the beginning
-        self._players_positions = {'human': 0, 'ai_1': 0, 'ai_2': 0, 'ai_3': 0}
+        self._players_positions = {'human': 0, 'ai_1': 0, 'ai_2': 0}
+        # we always start with the human player
+        self._players_turn = 1
 
-    def roll_the_dice(self, turn_player):
+    def roll_the_dice(self):
         """
         Moves the player 1 to 6 positions. It takes one argument, which players turn it is
         """
         dice = random.randint(1, 6)
-        if turn_player == 1:
-            self._players_positions['human'] += dice
-        elif turn_player == 2:
-            self._players_positions['ai_1'] += dice
-        elif turn_player == 3:
-            self._players_positions['ai_2'] += dice
+        if self._players_turn == 1:
+            current_pos = self._players_positions['human'] + dice
+            box_pos = self.adjust_box_count(current_pos)
+            self._players_positions['human'] = box_pos
+            self._players_turn +=1
+        elif self._players_turn == 2:
+            current_pos = self._players_positions['ai_1'] + dice
+            box_pos = self.adjust_box_count(current_pos)
+            self._players_positions['ai_1'] = box_pos
+            self._players_turn += 1
         else:
-            self._players_positions['ai_3'] += dice
+            if self._players_turn == 3 and self._ai_player2 is not None:
+                current_pos = self._players_positions['ai_2'] + dice
+                box_pos = self.adjust_box_count(current_pos)
+                self._players_positions['ai_2'] = box_pos
+                self._players_turn = 1
+            else:
+                self._players_turn = 1
+                self.roll_the_dice()
 
     def check_card_status_and_decide(self, card):
         """AI player checks whether the card is owned by someone and decides to purchase or not."""
@@ -64,6 +77,13 @@ class MonopolyGameRules:
             players_turn.add_cash(200000)
             self.load_players_positions(player_name, players_turn)
         return (pos_x, pos_y)
+
+    # Helper method to check if the position of the player has exceted the 39 count and return the box from the
+    # beginning of the board
+    def adjust_box_count(self, roll):
+        if roll > 39:
+            roll -= 39
+        return roll
 
     # Method to get the position dictionary
     def get_players_position(self):

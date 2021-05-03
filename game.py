@@ -65,10 +65,9 @@ class Game:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_coord = pygame.mouse.get_pos()
             if 990 < mouse_coord[0] < 1095 and 340 < mouse_coord[1] < 380:
-                self._game_rules.roll_the_dice(self._players_turns)
+                self._game_rules.roll_the_dice()
                 self._players_turns += 1
                 self.update_players_position()
-                print('roll')
 
     # Method to get the cards from the Board class and draw the cards on the board
     def create_cards_on_board(self):
@@ -198,11 +197,45 @@ class Game:
 
     # Method refreshes player character to be in the correct box after the dishes have been rolled
     def update_players_position(self):
-        base_x = 770
-        base_7 = 580
+        """
+        This method blits the characters in the correct position after the roll position is executed.
+        :return:
+        """
         positions = self._game_rules.get_players_position()
-        print(positions)
+        for key, value in positions.items():
+            coord_x, coord_y = self.get_player_coordinates(value)
+            if key == 'human':
+                self.screen.blit(self._human_character_img, (coord_x, coord_y))
+            elif key == 'ai_1':
+                self.screen.blit(self._ai1_char_img, (coord_x, coord_y))
+            else:
+                pass
+                # self.screen.blit(self._ai2_char_img, (coord_x, coord_y))
 
+        # In the above we put the method that takes the current position and assigns the dimensions from the helper
+        # method
+
+    def get_player_coordinates(self, pos):
+        """This is a helper method that takes the box # a player is in and returns the coordinates on the board"""
+        if pos < 11:
+            x = 770 - (pos * 70)
+            y = 580
+            return (x, y)
+        elif 10 < pos < 21:
+            coord = pos - 10
+            x = 70
+            y = 580 - (coord * 50)
+            return (x, y)
+        elif 20 < pos < 31:
+            coord = pos - 20
+            x = 70 + (70 * coord)
+            y = 50
+            return (x, y)
+        else:
+            coord = pos - 31
+            x = 770
+            y = 50 + (50 * coord)
+            return (x, y)
 
 
 class CardsData:
