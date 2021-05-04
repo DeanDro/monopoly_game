@@ -56,6 +56,3 @@ class LoadPlayers:
             self._screen.blit(ai_cash, (1150, loc_y))
             self._screen.blit(ai_value, (1250, loc_y))
             starting_point += 1
-
-    def update_player_data(self, player_chosen):
-        """The method updates the numbers on the game screen for a selected player"""
