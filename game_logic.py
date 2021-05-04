@@ -57,7 +57,7 @@ class MonopolyGameRules:
         pos_x = 0
         pos_y = 0
         box_num = self._players_positions[player_name]
-        if 0 <= box_num <=10:
+        if 0 <= box_num <= 10:
             pos_x = (11 - (11 - box_num)) * 70
             pos_y = 11 * 50
         elif 11 <= box_num <= 20:
@@ -76,7 +76,7 @@ class MonopolyGameRules:
             self._players_positions[player_name] = box_num
             players_turn.add_cash(200000)
             self.load_players_positions(player_name, players_turn)
-        return (pos_x, pos_y)
+        return pos_x, pos_y
 
     # Helper method to check if the position of the player has exceted the 39 count and return the box from the
     # beginning of the board

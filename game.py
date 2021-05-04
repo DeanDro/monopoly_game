@@ -38,9 +38,10 @@ class Game:
         self._human_player = self.load_info_for_human()
         self._ai_dictionary = self.load_info_for_ai()
         self._game_rules = self.initiate_game_logic()
+        self.update_players_position()
         # players name and information are loaded in the LoadPlayers class and there we generate the images
         # to be display on the regular screen.
-        self.player = LoadPlayers(self.screen, self._human_player, self._ai_dictionary  )
+        self.player = LoadPlayers(self.screen, self._human_player, self._ai_dictionary)
         self.player.return_images_on_screen()
         self.player.create_ai_opponents()
 
@@ -65,8 +66,15 @@ class Game:
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_coord = pygame.mouse.get_pos()
             if 990 < mouse_coord[0] < 1095 and 340 < mouse_coord[1] < 380:
+                # In order to show movement on the board we have to redraw the board with all the information, but
+                # with the position of the characters in their new coordinates.
                 self._game_rules.roll_the_dice()
                 self._players_turns += 1
+                self.screen.fill(self._background_blue)
+                self.create_cards_on_board()
+                self.player.return_images_on_screen()
+                self.player.create_ai_opponents()
+                self.roll_dice_button()
                 self.update_players_position()
 
     # Method to get the cards from the Board class and draw the cards on the board
@@ -136,12 +144,12 @@ class Game:
                 else:
                     str2 += character
                     counter += 1
-            label1 = font_renderer.render(str1, 1, (255, 255, 255))
-            label2 = font_renderer.render(str2, 1, (255, 255, 255))
+            label1 = font_renderer.render(str1, True, (255, 255, 255))
+            label2 = font_renderer.render(str2, True, (255, 255, 255))
             surface.blit(label1, (point_x + 5, point_y + 5))
             surface.blit(label2, (point_x + 5, point_y + 15))
         else:
-            label = font_renderer.render(card, 1, (255, 255, 255))
+            label = font_renderer.render(card, True, (255, 255, 255))
             surface.blit(label, (point_x + 5, point_y + 5))
 
     def load_info_for_human(self):
@@ -172,7 +180,7 @@ class Game:
         Method to create the button for rolling dice when player plays.
         """
         button_font = pygame.font.Font(pygame.font.get_default_font(), 20)
-        roll_dice = button_font.render('Roll Dice', 1, (255, 255, 255))
+        roll_dice = button_font.render('Roll Dice', True, (255, 255, 255))
         pygame.draw.rect(self.screen, self._background_orange, (990, 340, 105, 40))
         pygame.display.update()
         self.screen.blit(roll_dice, (1000, 350))
@@ -186,13 +194,8 @@ class Game:
         if self._number_opponents == 2:
             ai_1 = self._ai_dictionary.get('Player1')
             ai_2 = self._ai_dictionary.get('Player2')
-            self.screen.blit(self._human_character_img, (770, 580))
-            self.screen.blit(self._ai1_char_img, (790, 580))
-            self.screen.blit(self._ai2_char_img, (810, 580))
             return MonopolyGameRules(self._human_player, ai_1, ai_2)
         else:
-            self.screen.blit(self._human_character_img, (770, 580))
-            self.screen.blit(self._ai1_char_img, (790, 580))
             return MonopolyGameRules(self._human_player, self._ai_dictionary.get('Player1'))
 
     # Method refreshes player character to be in the correct box after the dishes have been rolled
@@ -220,22 +223,22 @@ class Game:
         if pos < 11:
             x = 770 - (pos * 70)
             y = 580
-            return (x, y)
+            return x, y
         elif 10 < pos < 21:
             coord = pos - 10
             x = 70
             y = 580 - (coord * 50)
-            return (x, y)
+            return x, y
         elif 20 < pos < 31:
             coord = pos - 20
             x = 70 + (70 * coord)
             y = 50
-            return (x, y)
+            return x, y
         else:
             coord = pos - 31
             x = 770
             y = 50 + (50 * coord)
-            return (x, y)
+            return x, y
 
 
 class CardsData:
