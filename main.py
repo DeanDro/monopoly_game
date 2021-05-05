@@ -28,7 +28,7 @@ class CrazyMonopoly(tk.Frame):
 
     # Function to create a label giving the text and placement
     def create_labels(self, label_text, column_loc, row_loc, column_length=None, x_gap=None, y_gap=None):
-        character_label = tk.Label(self.master, text=label_text, font=('Arial', 15), background='black')
+        character_label = tk.Label(self.master, text=label_text, font=('Arial', 15), bg='#3C193C')
         character_label.configure(fg='#f5f7f6')
         character_label.grid(column=column_loc, row=row_loc, columnspan=column_length,
                              padx=x_gap, pady=y_gap)
@@ -43,12 +43,12 @@ class CrazyMonopoly(tk.Frame):
         variable.set(options[0])
         dropdown = tk.OptionMenu(self.master, variable, *options)
         dropdown.configure(fg='#FFFFFF')
-        dropdown.configure(background='black')
+        dropdown.configure(bg='#3C193C')
         dropdown.grid(column=column_loc, row=row_loc)
 
     # Method to add a button
     def create_button(self, text_but, column_loc, row_loc, command_function=None, pad_y=None):
-        button = tk.Button(self.master, text=text_but, font=('Arial', 15), background='grey',
+        button = tk.Button(self.master, text=text_but, font=('Arial', 15), bg='#D96A1E',
                            command=command_function)
         button.grid(column=column_loc, row=row_loc, pady=pad_y)
 
@@ -70,7 +70,7 @@ class CrazyMonopoly(tk.Frame):
 
 root = tk.Tk()
 root.geometry('400x400')
-root.configure(background='black')
+root.configure(bg='#3C193C')
 root.title('Crazy Monopoly')
 crazy_monopoly = CrazyMonopoly(root)
 crazy_monopoly.mainloop()

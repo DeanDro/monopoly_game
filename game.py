@@ -18,7 +18,7 @@ class Game:
     def __init__(self, username, num_opponents, user_character):
         pygame.init()
         self._background_blue = (60, 25, 60)
-        self._background_orange = (236, 181, 22)
+        self._background_orange = (224, 81, 41)
         self._username = username
         self._character = user_character
 
