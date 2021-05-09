@@ -88,3 +88,35 @@ class MonopolyGameRules:
     # Method to get the position dictionary
     def get_players_position(self):
         return self._players_positions
+
+    def confirm_number_players(self):
+        if self._ai_player2 is None:
+            return 2
+        else:
+            return 3
+
+    def game_logic(self, cards_dictionary):
+        """
+        This function takes as a parameter the player currently playing and depending on whether it is a human or
+        it is the ai gives option to human to purchase a card or make other actions or if it is AI decides how to
+        proceed.
+        :param player_currently:
+        :return:
+        """
+        current_player = self._players_turn
+        # We are looking at the total number of players
+        number_players = self.confirm_number_players()
+        if number_players == 2:
+            if self._players_turn == 1:
+                # Here we will put the methods to run the code for humans
+                pass
+            else:
+                # The code for AI
+                current_pos = self._players_positions['ai_1']
+                # We have stored cards in the dictionary by the location
+                current_card = cards_dictionary.get[current_pos]
+                current_card_type = current_card.get_card_type()
+                if current_card_type != 'Chance' or current_card_type != 'Community' or current_card_type != 'Special':
+                    if current_card.get_owner() is None:
+                        current_card.get_card_cost()
+                        # we stop to the point where we get the cost of the new card

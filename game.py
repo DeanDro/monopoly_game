@@ -75,7 +75,6 @@ class Game:
                 # In order to show movement on the board we have to redraw the board with all the information, but
                 # with the position of the characters in their new coordinates.
                 self._game_rules.roll_the_dice()
-                self._players_turns += 1
                 self.screen.fill(self._background_blue)
                 self.add_cards_color_pattern()
                 self.create_cards_on_board()
@@ -83,6 +82,7 @@ class Game:
                 self.player.create_ai_opponents()
                 self.roll_dice_button()
                 self.update_players_position()
+                self._players_turns += 1
 
     # Method to get the cards from the Board class and draw the cards on the board
     def create_cards_on_board(self):
