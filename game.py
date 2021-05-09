@@ -14,6 +14,11 @@ class Game:
 
     # A list of all possible characters in the game
     LIST_OF_CHARACTERS = ['Airplane', 'Boat', 'Boot', 'Car']
+    CARDS_COLOR_PATTERNS = {1: (80, 70, 37), 3: (80, 70, 37), 6: (37, 82, 55), 8: (37, 82, 55), 9: (37, 82, 55),
+                            11: (30, 29, 31), 13: (30, 29, 31), 14: (30, 29, 31), 16: (222, 4, 12), 18: (222, 4, 12),
+                            19: (222, 4, 12), 21: (133, 118, 115), 23: (133, 118, 115), 24: (133, 118, 115),
+                            26: (111, 21, 230), 27: (111, 21, 230), 29: (111, 21, 230), 31: (98, 189, 118),
+                            32: (98, 189, 118), 34: (98, 189, 118), 37: (18, 17, 17), 39: (18, 17, 17)}
 
     def __init__(self, username, num_opponents, user_character):
         pygame.init()
@@ -33,6 +38,7 @@ class Game:
         self.screen.fill(self._background_blue)
         self.running = True
         self.default_font = pygame.font.get_default_font()
+        self.add_cards_color_pattern()
         self.create_cards_on_board()
         # Initialize the human player and the ai players dictionary and load them in the Monopoly Rules
         self._human_player = self.load_info_for_human()
@@ -71,6 +77,7 @@ class Game:
                 self._game_rules.roll_the_dice()
                 self._players_turns += 1
                 self.screen.fill(self._background_blue)
+                self.add_cards_color_pattern()
                 self.create_cards_on_board()
                 self.player.return_images_on_screen()
                 self.player.create_ai_opponents()
@@ -239,6 +246,20 @@ class Game:
             x = 770
             y = 50 + (50 * coord)
             return x, y
+
+    def add_cards_color_pattern(self):
+        """This method rotates through the cards and adds a color pattern so you can create color groups"""
+        for key, value in self.CARDS_COLOR_PATTERNS.items():
+            coord = self.get_player_coordinates(key)
+            pos_y = 0
+            if key < 21:
+                pos_y = coord[1] - 25
+            elif 20 < key < 30:
+                pos_y = coord[1]
+            else:
+                pos_y = coord[1] + 50
+            color_box = pygame.draw.rect(self.screen, value, (coord[0], pos_y, 70, 25))
+            pygame.display.update()
 
 
 class CardsData:
