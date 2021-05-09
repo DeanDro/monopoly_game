@@ -67,3 +67,13 @@ class Players:
     def get_cards(self):
         """Returns the dictionary with game cards"""
         return self._cards
+
+    def change_cash_value(self, change_value):
+        """
+        This method takes as a parameter the amount that the cash value will change with.
+        """
+        self._money += change_value
+
+    def change_total_value(self, change_value):
+        """This method changes the total value of the player"""
+        self._total_value += change_value

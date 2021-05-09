@@ -118,5 +118,22 @@ class MonopolyGameRules:
                 current_card_type = current_card.get_card_type()
                 if current_card_type != 'Chance' or current_card_type != 'Community' or current_card_type != 'Special':
                     if current_card.get_owner() is None:
-                        current_card.get_card_cost()
+                        card_cost = current_card.get_card_cost()
                         # we stop to the point where we get the cost of the new card
+                        available_cash = self._ai_player1.get_money()
+                        if card_cost < available_cash:
+                            current_card.set_card_ownder(self._ai_player1.return_name())
+                            self._ai_player1.add_card_players_stuck(current_card)
+                            total_value_change = available_cash - card_cost
+                            self._ai_player1.change_cash_value(total_value_change)
+                            self._ai_player1.change_total_value(total_value_change)
+                    else:
+                        card_owner = current_card.get_owner()
+                        if card_owner == self._human:
+                            rent = current_card.get_card_rent()
+                            exp = (-1) * rent
+                            self._ai_player1.change_cash_value(exp)
+                            self._ai_player1.change_total_value(exp)
+                            self._human.change_cash_value(rent)
+                            self._human.change_total_value(rent)
+
