@@ -26,6 +26,7 @@ class Game:
         self._background_orange = (224, 81, 41)
         self._username = username
         self._character = user_character
+        self._properties_data = CardsData().return_complete_dictionary()
 
         # We create placeholders for the images of the characters for the human and ai players. The actual loading
         # will happen later depending.
@@ -82,11 +83,13 @@ class Game:
                 self.player.create_ai_opponents()
                 self.roll_dice_button()
                 self.update_players_position()
+                self._game_rules.game_logic()
                 self._players_turns += 1
 
     # Method to get the cards from the Board class and draw the cards on the board
     def create_cards_on_board(self):
-        properties_data = CardsData().return_complete_dictionary()
+        # properties_data = CardsData().return_complete_dictionary()
+        properties_data = self._properties_data
         # The horizontal will be increasing each time we add a card horizontally and the vertical each time we add a
         # card vertically
         horizontal = 1

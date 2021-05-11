@@ -95,7 +95,7 @@ class MonopolyGameRules:
         else:
             return 3
 
-    def game_logic(self, cards_dictionary):
+    def game_logic(self, **cards_dictionary):
         """
         This function takes as a parameter the player currently playing and depending on whether it is a human or
         it is the ai gives option to human to purchase a card or make other actions or if it is AI decides how to
@@ -109,10 +109,16 @@ class MonopolyGameRules:
         if number_players == 2:
             if self._players_turn == 1:
                 # Here we will put the methods to run the code for humans
-                pass
+                current_pos = self._players_positions['human']
+                current_card = cards_dictionary[current_pos]
+                current_card_type = self.check_card_purchasable(current_card)
+                if current_card_type:
+                    if current_card.get_owner() is None:
+                        self.open_window_for_card()
             else:
                 # The code for AI
                 current_pos = self._players_positions['ai_1']
+                print(current_pos)
                 # We have stored cards in the dictionary by the location
                 current_card = cards_dictionary.get[current_pos]
                 current_card_type = current_card.get_card_type()
@@ -128,12 +134,26 @@ class MonopolyGameRules:
                             self._ai_player1.change_cash_value(total_value_change)
                             self._ai_player1.change_total_value(total_value_change)
                     else:
-                        card_owner = current_card.get_owner()
-                        if card_owner == self._human:
-                            rent = current_card.get_card_rent()
-                            exp = (-1) * rent
-                            self._ai_player1.change_cash_value(exp)
-                            self._ai_player1.change_total_value(exp)
-                            self._human.change_cash_value(rent)
-                            self._human.change_total_value(rent)
+                        rent = current_card.get_card_rent()
+                        exp = (-1) * rent
+                        self._ai_player1.change_cash_value(exp)
+                        self._ai_player1.change_total_value(exp)
+                        self._human.change_cash_value(rent)
+                        self._human.change_total_value(rent)
 
+    def check_card_purchasable(self, card):
+        """This method takes a card as an argument and checks if it can be purchased"""
+        card_type = card.get_card_type()
+        if card_type != 'Chance' or card_type != 'Community' or card_type != 'Special':
+            return True
+        return False
+
+    def open_window_for_card(self):
+        pygame.init()
+        screen2 = pygame.display.set_mode((200, 200))
+        screen2.fill((255, 255, 255))
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
