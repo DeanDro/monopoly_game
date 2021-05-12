@@ -7,8 +7,9 @@ from players import Players
 
 class MonopolyGameRules:
 
-    def __init__(self, human_player, ai_player1, ai_player2=None):
+    def __init__(self, human_player, ai_player1, ai_player2=None, **cards_data):
         """Initialize the game and load all players"""
+        self._cards_dictionary = cards_data
         self._human = human_player
         self._ai_player1 = ai_player1
         self._ai_player2 = ai_player2
@@ -95,7 +96,7 @@ class MonopolyGameRules:
         else:
             return 3
 
-    def game_logic(self, **cards_dictionary):
+    def game_logic(self):
         """
         This function takes as a parameter the player currently playing and depending on whether it is a human or
         it is the ai gives option to human to purchase a card or make other actions or if it is AI decides how to
@@ -110,17 +111,16 @@ class MonopolyGameRules:
             if self._players_turn == 1:
                 # Here we will put the methods to run the code for humans
                 current_pos = self._players_positions['human']
-                current_card = cards_dictionary[current_pos]
+                current_card = self._cards_dictionary[current_pos]
                 current_card_type = self.check_card_purchasable(current_card)
                 if current_card_type:
                     if current_card.get_owner() is None:
-                        self.open_window_for_card()
+                        print('You should buy the card')
             else:
                 # The code for AI
                 current_pos = self._players_positions['ai_1']
-                print(current_pos)
                 # We have stored cards in the dictionary by the location
-                current_card = cards_dictionary.get[current_pos]
+                current_card = self._cards_dictionary.get[current_pos]
                 current_card_type = current_card.get_card_type()
                 if current_card_type != 'Chance' or current_card_type != 'Community' or current_card_type != 'Special':
                     if current_card.get_owner() is None:
@@ -148,12 +148,3 @@ class MonopolyGameRules:
             return True
         return False
 
-    def open_window_for_card(self):
-        pygame.init()
-        screen2 = pygame.display.set_mode((200, 200))
-        screen2.fill((255, 255, 255))
-        running = True
-        while running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False

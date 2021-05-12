@@ -204,9 +204,9 @@ class Game:
         if self._number_opponents == 2:
             ai_1 = self._ai_dictionary.get('Player1')
             ai_2 = self._ai_dictionary.get('Player2')
-            return MonopolyGameRules(self._human_player, ai_1, ai_2)
+            return MonopolyGameRules(self._human_player, ai_1, ai_2, self._properties_data)
         else:
-            return MonopolyGameRules(self._human_player, self._ai_dictionary.get('Player1'))
+            return MonopolyGameRules(self._human_player, self._ai_dictionary.get('Player1'), self._properties_data)
 
     # Method refreshes player character to be in the correct box after the dishes have been rolled
     def update_players_position(self):
